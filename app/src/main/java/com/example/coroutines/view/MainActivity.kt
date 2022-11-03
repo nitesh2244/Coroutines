@@ -1,9 +1,10 @@
-package com.example.coroutines
+package com.example.coroutines.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import com.example.coroutines.R
 import com.example.coroutines.databinding.ActivityMainBinding
 import com.example.coroutines.network.ApiInterface
 import com.example.coroutines.repository.UserRepo
