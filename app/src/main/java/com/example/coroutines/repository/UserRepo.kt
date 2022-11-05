@@ -12,6 +12,6 @@ class UserRepo constructor(private val apiInterface: ApiInterface) {
         while (true) {
             emit(apiInterface.getPost())
         }
-    }.flowOn(Dispatchers.Default)
+    }.flowOn(Dispatchers.IO)
     // suspend fun getData() = apiInterface.getPost()
 }
