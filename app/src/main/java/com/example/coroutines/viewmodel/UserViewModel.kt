@@ -6,10 +6,11 @@ import androidx.lifecycle.viewModelScope
 import com.example.coroutines.Model.ApiDataItem
 import com.example.coroutines.repository.UserRepo
 import kotlinx.coroutines.*
-
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class UserViewModel constructor(private val userRepo: UserRepo) : ViewModel() {
-    //    lateinit var flow: Flow<Int>
+    //lateinit var flow: Flow<Int>
     val userList: MutableLiveData<List<ApiDataItem>> by lazy { MutableLiveData<List<ApiDataItem>>() }
 
     fun getUser() {
@@ -17,8 +18,6 @@ class UserViewModel constructor(private val userRepo: UserRepo) : ViewModel() {
             userRepo.getFlow().collect {
                 userList.value = it
             }
-//
         }
-
     }
 }

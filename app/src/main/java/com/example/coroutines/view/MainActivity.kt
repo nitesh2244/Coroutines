@@ -1,12 +1,17 @@
 package com.example.coroutines.view
 
+import android.app.PendingIntent.getActivity
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.coroutines.Model.ApiDataItem
 import com.example.coroutines.R
+import com.example.coroutines.adapter.Adapter
 import com.example.coroutines.databinding.ActivityMainBinding
 import com.example.coroutines.network.Retro
 import com.example.coroutines.repository.UserRepo
@@ -21,16 +26,18 @@ import kotlinx.coroutines.flow.flowOn
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var userViewModel: UserViewModel
+    private lateinit var adapter: Adapter
     lateinit var flow: Flow<Int>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        setupClicks()
+        // setupClicks()
         setupFlow()
 
         val retro = Retro.getInstance()
         val userRepo = UserRepo(retro)
+
 
         userViewModel =
             ViewModelProvider(this, ViewModelFactory(userRepo))[UserViewModel::class.java]
@@ -40,10 +47,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         userViewModel.userList.observe(this) {
-            binding.tv.text = it[0].title
+            Log.d("daadadad", "onCreate: " + it)
+            initRecycler(it)
+
         }
-
-
     }
 
     private fun setupFlow() {
@@ -56,14 +63,27 @@ class MainActivity : AppCompatActivity() {
         }.flowOn(Dispatchers.Default)
     }
 
-    private fun setupClicks() {
-        binding.startFlow.setOnClickListener {
-            CoroutineScope(Dispatchers.Main).launch {
-                flow.collect {
-                    Log.d(TAG, it.toString())
-                }
-            }
-        }
+//    private fun setupClicks() {
+//        binding.startFlow.setOnClickListener {
+//            CoroutineScope(Dispatchers.Main).launch {
+//                flow.collect {
+//                    Log.d(TAG, it.toString())
+//                }
+//            }
+//        }
+//    }
+
+    private fun initRecycler(list: List<ApiDataItem>) {
+        binding.rv.setLayoutManager(
+            LinearLayoutManager(
+                this,
+                LinearLayoutManager.VERTICAL,false
+            )
+        )
+        binding.rv.setHasFixedSize(true)
+        binding.rv.setItemAnimator(DefaultItemAnimator())
+        adapter = Adapter(this, list)
+        binding.rv.setAdapter(adapter)
     }
 }
 

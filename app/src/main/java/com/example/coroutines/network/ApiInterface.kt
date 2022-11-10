@@ -9,5 +9,4 @@ interface ApiInterface {
 
     @GET("posts")
     suspend fun getPost(): List<ApiDataItem>
-
 }

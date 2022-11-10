@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class Retro {
     companion object {
-        var retrofitService : ApiInterface? = null
+        var retrofitService: ApiInterface? = null
         fun getInstance(): ApiInterface {
             if (retrofitService == null) {
                 val retrofit = Retrofit.Builder()
